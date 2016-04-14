@@ -1,0 +1,143 @@
+Sub textR()
+Dim x As Double
+Dim txt As String
+Dim path As String
+'Close "C:\Users\Labuser\Desktop\nil\test.txt" if open
+'Open "C:\Users\Labuser\Desktop\nil\CatiaChanges\childArrange\nil7.txt" For Input As #1
+path = InputBox("enter your path")
+'MsgBox path
+Open "" + path For Input As #1
+
+x = 0
+Do While Not EOF(1)
+Line Input #1, txt
+Cells(1, 1).Offset(x, 0) = txt
+x = x + 1
+Loop
+'Cells(1, 1).Value = ""
+'Cells(2, 1).Value = ""
+Range(Range("A5"), Range("A5").End(xlDown)).Select
+Close #1
+firstElement
+Delete_Every_Other_Row
+'Call shift
+deleteBlank
+blankCellColumnA
+
+End Sub
+Sub firstElement()
+
+Range("B3").Select
+    'ActiveCell.FormulaR1C1 = "=LEFT(TRIM(RC[-1]))"
+    ActiveCell.FormulaR1C1 = "=LEFT(TRIM(RC[-1]),FIND("" "",TRIM(RC[-1]))-1)"
+
+    Range("B3").Select
+    'Selection.AutoFill Destination:=Range("B5:B101"), Type:=xlFillDefault
+    Selection.AutoFill Destination:=Range("B3:B600"), Type:=xlFillDefault
+    ThisWorkbook.Sheets("Sheet1").SaveAs ("C:\Users\Nilakantha Singh Deo\Desktop\macroTree\Sheet1.csv")
+    
+End Sub
+Sub Delete_Every_Other_Row()
+
+   ' Dimension variables.
+   Y = False              ' Change this to True if you want to
+                          ' delete rows 1, 3, 5, and so on.
+   i = 1
+   Range(Range("A1"), Range("A1").End(xlDown)).Select
+   Set xRng = Selection
+
+   ' Loop once for every row in the selection.
+   For xCounter = 1 To xRng.Rows.Count
+
+       ' If Y is True, then...
+       If Y = True Then
+
+           ' ...delete an entire row of cells.
+           xRng.Cells(i).EntireRow.Delete
+
+       ' Otherwise...
+       Else
+
+           ' ...increment I by one so we can cycle through range.
+           i = i + 1
+
+       End If
+
+       ' If Y is True, make it False; if Y is False, make it True.
+       Y = Not Y
+
+   Next xCounter
+   Dim j As Integer
+   j = i - 1
+   
+    'autoCounter
+    Dim k As Integer
+    For k = 2 To i - 1
+    Cells(k, 3).Value = k - 1
+    Next k
+    Cells(1, 1).Value = ""
+End Sub
+Sub deleteBlank()
+    Selection.SpecialCells(xlCellTypeBlanks).Select
+    Selection.EntireRow.Delete
+End Sub
+Sub blankCellColumnA()
+Range("A1").End(xlDown).Offset(1, 0).Select
+Rows(ActiveCell.Row & ":" & Rows.Count).Delete Shift:=xlUp
+End Sub
+Sub compareForChild()
+Dim t As Integer    't as the template
+Dim i As Integer
+Dim j As Integer    'j as the column
+Dim c As Integer        'c as the counter of the selected cells
+Dim k As Integer        'for temporary variable increament
+Dim r As Integer        'variable for right increament
+ Range(Range("C1"), Range("C1").End(xlDown)).Select
+ 'MsgBox Application.Selection.Cells.Count
+c = Application.Selection.Cells.Count
+'MsgBox "r=" & r
+'j = 4
+'k = 1
+
+    
+ '   For i = 1 To c
+  '  t = Cells(k, 2)
+   '
+    'If ((Cells(i + 1, 2)) - t = 1) Then
+'    Cells(1, j).Value = Cells(i + 1, 3).Value
+ '   j = j + 1
+  '  End If
+   '
+    'Next i
+    
+
+
+j = 4
+k = 1
+
+    For i = 2 To c
+        t = Cells(k + 1, 2)
+        If ((Cells(i + 1, 2) - t) = 0) Then
+        k = k + 1
+        
+           ' If ((Cells(i + 1, 2) - t) > 1) Then
+            'i = i + 1
+            ElseIf ((Cells(i + 1, 2) - t) = 1) Then
+            Cells(k + 1, j) = Cells(i + 1, 3)
+            j = j + 1
+            
+            End If
+        
+        Next i
+  
+End Sub
+
+
+
+
+
+
+
+
+
+

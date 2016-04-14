@@ -1,0 +1,285 @@
+Sub textR()
+Dim x As Double
+Dim txt As String
+Dim path As String
+'Close "C:\Users\Labuser\Desktop\nil\test.txt" if open
+'Open "C:\Users\Labuser\Desktop\nil\CatiaChanges\childArrange\nil7.txt" For Input As #1
+path = InputBox("enter your path")
+'MsgBox path
+Open "" + path For Input As #1
+
+x = 0
+Do While Not EOF(1)
+Line Input #1, txt
+Cells(1, 1).Offset(x, 0) = txt
+x = x + 1
+Loop
+'Cells(1, 1).Value = ""
+'Cells(2, 1).Value = ""
+Range(Range("A5"), Range("A5").End(xlDown)).Select
+Close #1
+firstElement
+Delete_Every_Other_Row
+'Call shift
+deleteBlank
+blankCellColumnA
+compareForChildAnand
+subAssembly
+headShift
+getImpact
+ImpactAgrigate
+ThisWorkbook.SaveAs ("D:\macroTree\sheet1.csv")
+killExcelProcess
+ThisWorkbook.Close
+
+End Sub
+Sub firstElement()
+
+Range("B3").Select
+    'ActiveCell.FormulaR1C1 = "=LEFT(TRIM(RC[-1]))"
+    ActiveCell.FormulaR1C1 = "=LEFT(TRIM(RC[-1]),FIND("" "",TRIM(RC[-1]))-1)"
+
+    Range("B3").Select
+    'Selection.AutoFill Destination:=Range("B5:B101"), Type:=xlFillDefault
+    Selection.AutoFill Destination:=Range("B3:B600"), Type:=xlFillDefault
+    ThisWorkbook.Sheets("Sheet1").SaveAs ("D:\macroTree\Sheet1.csv")
+    
+End Sub
+Sub Delete_Every_Other_Row()
+
+   ' Dimension variables.
+   Y = False              ' Change this to True if you want to
+                          ' delete rows 1, 3, 5, and so on.
+   i = 1
+   Range(Range("A1"), Range("A1").End(xlDown)).Select
+   Set xRng = Selection
+
+   ' Loop once for every row in the selection.
+   For xCounter = 1 To xRng.Rows.Count
+
+       ' If Y is True, then...
+       If Y = True Then
+
+           ' ...delete an entire row of cells.
+           xRng.Cells(i).EntireRow.Delete
+
+       ' Otherwise...
+       Else
+
+           ' ...increment I by one so we can cycle through range.
+           i = i + 1
+
+       End If
+
+       ' If Y is True, make it False; if Y is False, make it True.
+       Y = Not Y
+
+   Next xCounter
+   Dim j As Integer
+   j = i - 1
+   
+    'autoCounter
+    Dim k As Integer
+    For k = 2 To i - 1
+    Cells(k, 3).Value = k - 1
+    Next k
+    Cells(1, 1).Value = ""
+End Sub
+Sub deleteBlank()
+    Selection.SpecialCells(xlCellTypeBlanks).Select
+    Selection.EntireRow.Delete
+End Sub
+Sub blankCellColumnA()
+Range("A1").End(xlDown).Offset(1, 0).Select
+Rows(ActiveCell.Row & ":" & Rows.Count).Delete shift:=xlUp
+End Sub
+Sub compareForChild()
+Dim t As Integer    't as the template
+Dim i As Integer
+Dim j As Integer    'j as the column
+Dim c As Integer        'c as the counter of the selected cells
+Dim k As Integer        'for temporary variable increament
+Dim r As Integer        'variable for right increament
+ Range(Range("C1"), Range("C1").End(xlDown)).Select
+ 'MsgBox Application.Selection.Cells.Count
+c = Application.Selection.Cells.Count
+'MsgBox "r=" & r
+j = 4
+k = 1
+
+    
+   For i = 1 To c
+  t = Cells(k, 2)
+
+    If ((Cells(i + 1, 2)) - t = 1) Then
+    Cells(1, j).Value = Cells(i + 1, 3).Value
+  j = j + 1
+ End If
+
+Next i
+    
+
+
+j = 4
+k = 1
+
+    For i = 2 To c
+        t = Cells(k + 1, 2)
+        If ((Cells(i + 1, 2) - t) = 0) Then
+        k = k + 1
+        j = 4
+           ' If ((Cells(i + 1, 2) - t) > 1) Then
+            'i = i + 1
+            ElseIf ((Cells(i + 1, 2) - t) = 1) Then
+            Cells(k + 1, j) = Cells(i + 1, 3)
+            j = j + 1
+            
+            End If
+            
+       'MsgBox i + 1 & vbNewLine & j & vbNewLine & k & vbNewLine & t & vbNewLine & Cells(k + 1, 2) & vbNewLine & Cells(i + 1, 2) & vbNewLine & "->" & Cells(k + 1, j) & vbNewLine & Cells(i + 1, 3)
+        Next i
+        
+  
+End Sub
+Sub compareForChildAnand()
+Dim ColLength As Integer 'Column Length that helps to iterate
+Dim CurrentRefCell As Integer 'The Reference cell which is compared with - controls the itereator of the outer for loop
+Dim CurrentMovingCell As Integer 'The cell that is being compared to - controls the itereator of the inner for loop
+Dim ResultCol As Integer 'Column the results are written to
+
+Range(Range("C1"), Range("C1").End(xlDown)).Select
+ColLength = Application.Selection.Cells.Count
+
+For i = 1 To ColLength
+    ResultCol = 8                           'change 10April
+    For j = i + 1 To ColLength
+        CurrentRefCell = Cells(i, 2)
+        CurrentMovingCell = Cells(j, 2)
+        
+        'If the nodes are siblings - do nothing
+        If (CurrentRefCell = CurrentMovingCell) Then
+        Exit For
+        
+        'If the nodes are parent & child - write to ResultCol
+        ElseIf (CurrentMovingCell = CurrentRefCell + 1) Then
+        Cells(i, ResultCol) = Cells(j, 3)
+        ResultCol = ResultCol + 1
+        End If
+        
+        Next j
+    Next i
+    
+End Sub
+'Bingo!
+
+Sub subAssembly()
+    'find which is a subassembly and which is a part
+    Range(Range("C1"), Range("C1").End(xlDown)).Select
+    ColLength = Application.Selection.Cells.Count
+    Dim d As String
+    d = "D" & ColLength
+    Range("D2").Select
+    ActiveCell.FormulaR1C1 = "=IF(R[1]C[-2]=RC[-2],""No"",""Yes"")"
+    Range("D2").Select
+    'MsgBox d
+    Selection.AutoFill Destination:=Range("D2:" & d), Type:=xlFillDefault
+    Range("D2:" & d).Select
+    
+    Dim e As String
+    e = "E" & ColLength
+    Range("E2").Select
+    ActiveCell.FormulaR1C1 = "=IF(RC[-1]=""Yes"",""No"",""Yes"")"
+    Range("E2").Select
+    'MsgBox e
+    Selection.AutoFill Destination:=Range("E2:" & e), Type:=xlFillDefault
+    Range("E2:" & e).Select
+    Columns(4).Insert shift:=xlshiftRight
+    
+    Dim g As String
+    g = "G" & ColLength
+    Range("G2").Select
+    ActiveCell.FormulaR1C1 = "=IF(RC[-1]=""Yes"",1,2)"
+    Range("G2").Select
+    'MsgBox e
+    Selection.AutoFill Destination:=Range("G2:" & g), Type:=xlFillDefault
+    Range("G2:" & g).Select
+    'Columns(4).Insert shift:=xlshiftRight
+    
+    
+    
+
+End Sub
+Sub headShift()
+Rows(1).Insert shift:=xlShiftDown
+Sheet1.Range("A1").Value = "Part_assem_name"
+Sheet1.Range("B1").Value = "StatusPP"
+Sheet1.Range("C1").Value = "UID"
+Sheet1.Range("D1").Value = "Impact"
+Sheet1.Range("E1").Value = "SA"
+Sheet1.Range("F1").Value = "Part"
+Sheet1.Range("G1") = "Pr3Sa2Pa1"   'Pr=Product(3) Sa=subAssembly(2) Pa=parts(1)
+Sheet1.Range("G2") = 3
+Sheet1.Range("H1") = "Confidence"            'change 10April
+End Sub
+
+Sub getImpact()
+Dim IMPS As Workbook
+Set IMPS = Workbooks.Open("D:\macroTree\processImpact.xls")
+IMPS.Worksheets("Sheet1").Columns("B").Copy
+ThisWorkbook.Sheets("Sheet1").Columns("D").PasteSpecial
+IMPS.Worksheets("Sheet1").Columns("C").Copy                 'change 10April
+ThisWorkbook.Sheets("Sheet1").Columns("H").PasteSpecial     'change 10April
+IMPS.Close
+End Sub
+Sub ImpactAgrigate()
+Dim movRight As Integer
+Dim curRow As Integer
+Dim newVal As Integer
+Dim noChild As Integer
+For j = 1 To 100
+Cells(1, 8 + j) = j                  'change 10April
+Next
+Range(Range("D1"), Range("D1").End(xlDown)).Select
+ColLength = Application.Selection.Cells.Count
+movRight = 9                 'change 10April
+For curRow = 2 To ColLength
+ If (Cells(curRow, movRight) <> 0) Then
+ 'MsgBox "moveRight:" & movRight & "(curRow, 4):" & Cells(curRow, 4).Value & "" & newVal
+ For movRight = 9 To 100        'change 10April
+ newVal = Cells(curRow, movRight).Value
+ If (newVal <> 0) Then
+ Cells(curRow, 4).Value = Cells(curRow, 4).Value + Cells(newVal + 1, 4).Value
+ End If
+ Next movRight
+ 'MsgBox Cells(curRow, 4)
+ 'movRight = movRight + 1
+ End If
+ movRight = 9            'change 10April
+ Next
+End Sub
+
+
+Sub killExcelProcess()
+Dim oServ As Object
+Dim cProc As Variant
+Dim oProc As Object
+
+Set oServ = GetObject("winmgmts:")
+Set cProc = oServ.ExecQuery("Select * from Win32_Process")
+
+For Each oProc In cProc
+
+    'Rename EXCEL.EXE in the line below with the process that you need to Terminate.
+    'NOTE: It is 'case sensitive
+
+    If oProc.Name = "EXCEL.EXE" Then
+      MsgBox "KILL"   ' used to display a message for testing pur
+      errReturnCode = oProc.Terminate()
+    End If
+Next
+End Sub
+
+
+
+
+

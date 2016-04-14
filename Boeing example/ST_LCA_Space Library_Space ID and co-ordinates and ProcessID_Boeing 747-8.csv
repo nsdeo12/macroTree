@@ -1,0 +1,16 @@
+Space_ID,Space_Role,Factory_Name,City/Town/Village,State,Country,Geographic Co-ordinates,Process_ID
+S1,Duct manufacturing facility,,,,Canada,"23°35'52""N 65°28'51""W",77
+S2,Turbine blade facility,,,,Canada,"24°35'52""N 70°28'51""W","64,65,66,67,68,69"
+S3,Fan case facility,,,,Canada,"25°35'52""N 75°28'51""W","60,61,62"
+S4,Fan blade facility,,,,Canada,"26°35'52""N 80°28'51""W","52,53,54,55,56,57,58"
+S5,Flaps supplier,Boeing Aerostructures ,,Brisbane,Australia,27°28'S 153°02'E,4
+S6,High grade metal supplier,,,,China,29°12'N 140°30'E,"59, 63"
+S7,High grade Titanium sheet supplier,,,,China,30°12'N 110°30'E,51
+S8,Nose manufacturer,,,,USA,"30°35'52""N 85°28'51""W",18
+S9,Wing elements supplier,,Shanghai,,China,31°12'N 121°30'E,1
+S10,Main Engine Assembly facility,GE Aviation,Auburn,Alabama,USA,"32°35'52""N 85°28'51""W","70,71,72,73,74,75,76,78,79,21"
+S11,Fuselage frame manufacturer,,,,USA,"41°57'48""N 122°12'2""W",7
+S12,Fuselage Skin manufacturer,,,,USA,"43°57'48""N 122°12'2""W",6
+S13,Landing Gear Supplier,Heroux Devtec,Longueuil, Quebec,Canada,45°32'N 73°31'W,34
+S14,Aircraft assembly,Boeing Factory,Everett,Washington,USA,"47°57'48""N 122°12'2""W","3,5,8,9,10,11,12,13,14,15,16,17,19,20,22,23,24,25,26,27,28,29,30,31,32,33,35,36,37,38,39,40,41,42,43,45,46,47,48,49,50"
+S15,Aircraft Seats supplier,Recaro Aircraft Seating,Schwaebisch Hall,Baden-Württemberg,Germany,"49°6'44""N 9°44'15""E",44

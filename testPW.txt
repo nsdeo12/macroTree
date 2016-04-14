@@ -1,0 +1,24 @@
+Compute Date: 01 April 2016 11:29:09 
+ 
+0 Product1   
+     
+    1 Part1   
+         
+    1 Stringers2   
+         
+    1 Skin   
+         
+    1 Rivet   
+         
+    1 Rivetframe   
+         
+    1 test2   
+         
+        2 testnose   
+             
+        2 Part2   
+             
+        2 Part3   
+             
+    1 WingNaja   
+         
